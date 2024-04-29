@@ -1,0 +1,122 @@
+[
+  {
+    "de": "Haus",
+    "en": "House",
+    "it": "Casa",
+    "fr": "Maison"
+  },
+  {
+    "de": "Baum",
+    "en": "Tree",
+    "it": "Albero",
+    "fr": "Arbre"
+  },
+  {
+    "de": "Wasser",
+    "en": "Water",
+    "it": "Acqua",
+    "fr": "Eau"
+  },
+  {
+    "de": "Sonne",
+    "en": "Sun",
+    "it": "Sole",
+    "fr": "Soleil"
+  },
+  {
+    "de": "Auto",
+    "en": "Car",
+    "it": "Auto",
+    "fr": "Voiture"
+  },
+  {
+    "de": "Fluss",
+    "en": "River",
+    "it": "Fiume",
+    "fr": "Rivière"
+  },
+  {
+    "de": "Berg",
+    "en": "Mountain",
+    "it": "Montagna",
+    "fr": "Montagne"
+  },
+  {
+    "de": "Strand",
+    "en": "Beach",
+    "it": "Spiaggia",
+    "fr": "Plage"
+  },
+  {
+    "de": "Wald",
+    "en": "Forest",
+    "it": "Foresta",
+    "fr": "Forêt"
+  },
+  {
+    "de": "Weg",
+    "en": "Path",
+    "it": "Sentiero",
+    "fr": "Chemin"
+  },
+  {
+    "de": "Stadt",
+    "en": "City",
+    "it": "Città",
+    "fr": "Ville"
+  },
+  {
+    "de": "Dorf",
+    "en": "Village",
+    "it": "Villaggio",
+    "fr": "Village"
+  },
+  {
+    "de": "Licht",
+    "en": "Light",
+    "it": "Luce",
+    "fr": "Lumière"
+  },
+  {
+    "de": "Nacht",
+    "en": "Night",
+    "it": "Notte",
+    "fr": "Nuit"
+  },
+  {
+    "de": "Tag",
+    "en": "Day",
+    "it": "Giorno",
+    "fr": "Jour"
+  },
+  {
+    "de": "Freude",
+    "en": "Joy",
+    "it": "Gioia",
+    "fr": "Joie"
+  },
+  {
+    "de": "Trauer",
+    "en": "Sadness",
+    "it": "Tristezza",
+    "fr": "Tristesse"
+  },
+  {
+    "de": "Schnee",
+    "en": "Snow",
+    "it": "Neve",
+    "fr": "Neige"
+  },
+  {
+    "de": "Regen",
+    "en": "Rain",
+    "it": "Pioggia",
+    "fr": "Pluie"
+  },
+  {
+    "de": "Wind",
+    "en": "Wind",
+    "it": "Vento",
+    "fr": "Vent"
+  }
+]

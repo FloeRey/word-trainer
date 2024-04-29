@@ -1,0 +1,8 @@
+@if(trainingWords){ @if(trainingWords.length > 0 ){
+<div>{{ activeTraningWord }}</div>
+<input
+  hlmInput
+  [(ngModel)]="resultWord"
+  (ngModelChange)="onTrainWordChange($event)"
+/>
+}@else{ no words available } }@else{ loading words... }

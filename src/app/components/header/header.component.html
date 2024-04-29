@@ -1,0 +1,5 @@
+<div class="flex gap-12 p-4 text-2xl font-bold w-full justify-center">
+  @for(tab of tabs; track tab){
+  <a routerLink="{{ tab.url }}">{{ tab.name }}</a>
+  }
+</div>
