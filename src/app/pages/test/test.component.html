@@ -1,1 +1,20 @@
-<p>test works!</p>
+<div class="flex justify-center container flex-col gap-4">
+  @if(trainingWords){ @if(trainingWords.length > 0 ){ @if(activeTestWord() ){
+
+  <h4>Richtige Punkte : {{ testResult() }}</h4>
+
+  <div>
+    Wort in {{ activeTestWord()!.show.language }}:
+    {{ activeTestWord()!.show.word }}
+  </div>
+  <div class="flex flex-col">
+    <div>gesuchtes wort in {{ activeTestWord()!.search.language }}</div>
+    <input hlmInput [(ngModel)]="resultWord" />
+  </div>
+  <div class="flex gap-4">
+    <button hlmBtn variant="secondary" (click)="checkWord()">next</button>
+  </div>
+  } }@else{ no words available } }@else{ loading words... }
+</div>
+
+<a [routerLink]="['/']"> Test Abbrechen</a>

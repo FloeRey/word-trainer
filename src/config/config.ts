@@ -1,8 +1,8 @@
 export const config = {
   languages: {
-    de: true,
+    de: false,
     en: true,
-    fr: false,
+    fr: true,
     it: true,
   },
   tabs: [

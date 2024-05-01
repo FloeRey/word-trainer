@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { StatusService } from './../../services/status.service';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import {
   HlmTabsComponent,
   HlmTabsContentDirective,
@@ -20,7 +21,19 @@ import { RouterLink } from '@angular/router';
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
+  changeDetection : ChangeDetectionStrategy.OnPush
 })
 export class HeaderComponent {
   tabs = config.tabs;
+  isOnTest = signal(false);
+
+  statusService = inject(StatusService);
+  constructor() {
+    console.log('cons');
+    this.statusService.$isTestRunning_.subscribe({
+      next: (e: boolean) => {
+        this.isOnTest.set(e);
+      },
+    });
+  }
 }

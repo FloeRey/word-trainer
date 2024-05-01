@@ -1,8 +1,29 @@
-@if(trainingWords){ @if(trainingWords.length > 0 ){
-<div>{{ activeTraningWord }}</div>
-<input
-  hlmInput
-  [(ngModel)]="resultWord"
-  (ngModelChange)="onTrainWordChange($event)"
-/>
-}@else{ no words available } }@else{ loading words... }
+<div class="flex justify-center container flex-col gap-4">
+  @if(trainingWords){ @if(trainingWords.length > 0 ){ @if(activeTraningWord() ){
+  quality : {{ qualitys()[activeTraningWord()!.id] }}
+  <div>
+    Wort in {{ activeTraningWord()!.show.language }}:
+    {{ activeTraningWord()!.show.word }}
+  </div>
+  <div class="flex flex-col">
+    <div>gesuchtes wort in {{ activeTraningWord()!.search.language }}</div>
+    <input
+      hlmInput
+      [(ngModel)]="resultWord"
+      (ngModelChange)="onTrainWordChange($event)"
+    />
+  </div>
+  <div class="flex gap-4">
+    @if(isSuccess()){
+    <div class="flex items-center text-green-600">
+      <hlm-icon size="sm" name="radixHeartFilled" class="text-red-600" />
+      Gratulation!
+    </div>
+    }@else{
+    <button hlmBtn (click)="showResult()">showResult</button>
+    } @if(trainingWords.length > 1 ){
+    <button hlmBtn variant="secondary" (click)="nextWord()">next</button>
+    }
+  </div>
+  } }@else{ no words available } }@else{ loading words... }
+</div>

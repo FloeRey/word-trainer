@@ -4,9 +4,7 @@ export const routes: Routes = [
   {
     path: '',
     loadComponent: () =>
-      import('./components/pages/home/home.component').then(
-        (m) => m.HomeComponent
-      ),
+      import('./pages/home/home.component').then((m) => m.HomeComponent),
   },
   {
     path: 'training',
@@ -19,8 +17,6 @@ export const routes: Routes = [
   {
     path: 'test',
     loadComponent: () =>
-      import('./pages/training/training.component').then(
-        (m) => m.TrainingComponent
-      ),
+      import('./pages/test/test.component').then((m) => m.TestComponent),
   },
 ];
