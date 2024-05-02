@@ -1,3 +1,4 @@
+import { UtilsService } from './../../services/utils.service';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -49,6 +50,7 @@ type ActiveWord = {
 })
 export class TrainingComponent {
   wordService = inject(WordService);
+  utilsService = inject(UtilsService);
 
   trainingWords = this.wordService.getTrainingWords();
   qualitys = this.wordService.getWordsQuality();
@@ -76,36 +78,24 @@ export class TrainingComponent {
     }
   }
 
-  getRandomWord(words: Word[]) {
+  getRandomWord(words: Word[]): Word {
     const random = Math.floor(Math.random() * (this.trainingWords.length - 1));
     return words[random];
   }
 
   takeWord() {
-    let errorCount = 0;
     const word = this.getRandomWord(this.trainingWords);
-
-    const possibleLanguages = Object.keys(word).filter((key) => key !== 'id');
-    const takeWord = Math.floor(Math.random() * (possibleLanguages.length - 1));
-
-    let searchWord = takeWord + 1 > possibleLanguages.length ? 0 : takeWord + 1;
-
-    while (searchWord === takeWord && errorCount < 50) {
-      searchWord += 1;
-      errorCount++;
-    }
-
-    const languageTakeWord = possibleLanguages[takeWord];
-    const languageSearchWord = possibleLanguages[searchWord];
+    const availableLanguages = Object.keys(word).filter((key) => key !== 'id');
+    const shuffledArray = this.utilsService.shuffleArray(availableLanguages);
 
     return {
       show: {
-        word: word[languageTakeWord as AvailableLanguages]!,
-        language: languageTakeWord,
+        word: word[shuffledArray[0] as AvailableLanguages]!,
+        language: shuffledArray[0],
       },
       search: {
-        word: word[languageSearchWord as AvailableLanguages]!,
-        language: languageSearchWord,
+        word: word[shuffledArray[1] as AvailableLanguages]!,
+        language: shuffledArray[1],
       },
       id: word.id,
     };

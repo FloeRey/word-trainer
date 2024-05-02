@@ -18,7 +18,6 @@ import { config } from '../../config/config';
 })
 export class WordService {
   storageService = inject(StorageService);
-  sortState: { [key: string]: number } = {};
 
   constructor(private http: HttpClient) {}
 
@@ -29,6 +28,21 @@ export class WordService {
   wordsQuality: WritableSignal<Quality> = signal(
     this.storageService.getWordsQualityFromLocalStorage()
   );
+
+  add(word: { [key: string]: string }) {
+    const id = this.words().length.toString();
+    word['id'] = id;
+    Object.entries(word).forEach(([key, value]) => {
+      if (!value.trim()) {
+        delete word[key];
+      }
+    });
+
+    const newWordList = [...this.words(), { ...(word as Word) }];
+
+    localStorage.setItem('words', JSON.stringify(newWordList));
+    this.words.set(newWordList);
+  }
 
   async deleteWord(id: string) {
     const findIndex = this.words().findIndex((word) => word.id === id);
@@ -103,38 +117,5 @@ export class WordService {
     this.wordsQuality()[id] += this.wordsQuality()[id] < 1 ? 0.01 : 0;
     this.wordsQuality()[id] = parseFloat(this.wordsQuality()[id].toFixed(2));
     this.storageService.updateLocalStorageQuality(this.wordsQuality());
-  }
-
-  storeNewWord(word: { [key: string]: string }) {
-    const id = (Math.random() * 100).toString();
-    word['id'] = id;
-    Object.entries(word).forEach(([key, value]) => {
-      if (!value.trim()) {
-        delete word[key];
-      }
-    });
-
-    const newWordList = [...this.words(), { ...(word as Word) }];
-    localStorage.setItem('words', JSON.stringify(newWordList));
-    this.words.set(newWordList);
-  }
-
-  sort(language: AvailableLanguages) {
-    this.sortState[language] === 1
-      ? (this.sortState[language] = 0)
-      : (this.sortState[language] = 1);
-
-    this.words().sort((a, b) => {
-      if (!a[language] && !b[language]) return 0;
-      if (!a[language]) {
-        return 1;
-      }
-      if (!b[language]) {
-        return -1;
-      }
-      return this.sortState[language] === 1
-        ? a[language]!.localeCompare(b[language]!)
-        : b[language]!.localeCompare(a[language]!);
-    });
   }
 }

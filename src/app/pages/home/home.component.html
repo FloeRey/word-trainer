@@ -74,12 +74,7 @@
   @for(lang of languages(); track lang){
   <div class="flex gap-3">
     <h4 class="text-2xl font-bold">{{ lang }}</h4>
-    <button
-      hlmBtn
-      size="icon"
-      variant="outline"
-      (click)="wordService.sort(lang)"
-    >
+    <button hlmBtn size="icon" variant="outline" (click)="handleSort(lang)">
       <hlm-icon size="sm" name="radixAlignBaseline" />
     </button>
   </div>

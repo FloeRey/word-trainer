@@ -1,3 +1,4 @@
+import { UtilsService } from './../../services/utils.service';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -49,6 +50,7 @@ import {
 })
 export class HomeComponent {
   wordService = inject(WordService);
+  utilsService = inject(UtilsService);
   words = this.wordService.getWords();
 
   loading = signal(false);
@@ -66,7 +68,7 @@ export class HomeComponent {
   activeWord?: Word;
 
   submit() {
-    this.wordService.storeNewWord(this.newWord);
+    this.wordService.add(this.newWord);
     this.closeModals();
   }
 
@@ -99,5 +101,9 @@ export class HomeComponent {
     this.activeWord = undefined;
     this.newWordDialog.nativeElement.close();
     this.optionsDialog.nativeElement.close();
+  }
+
+  handleSort(lang: string) {
+    this.utilsService.sort(this.words(), lang);
   }
 }

@@ -1,3 +1,8 @@
+@if(hasUser()){
 <app-header></app-header>
 
 <router-outlet />
+
+}@else{
+<app-login></app-login>
+}

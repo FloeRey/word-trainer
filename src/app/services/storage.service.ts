@@ -22,4 +22,12 @@ export class StorageService {
   updateLocalStorageQuality(quality: Quality) {
     localStorage.setItem('profile=1', JSON.stringify(quality));
   }
+
+  async updateUser(name: string) {
+    localStorage.setItem('user', name);
+  }
+
+  readUser(): string | undefined {
+    return localStorage.getItem('user') ?? undefined;
+  }
 }
