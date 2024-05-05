@@ -2,7 +2,7 @@
 
 ## Description
 
-This project is in development mode and may still contain some bugs. This app allows you to define words and learn them in different languages.
+This app allows you to define words and learn them in different languages.
 
 ## Config
 In config.ts, you can configure the available languages.
@@ -12,9 +12,6 @@ In Training mode, only words that have at least two available translations among
 
 #### Test
 Set up your test and start. After completion, you'll see the results.
-
-##### Issues
-I encountered an issue with the grid-cols-x class from Tailwind. I'm unsure of the origin of this error, but it seems to have disappeared.
 
 ## Installation Information
 
