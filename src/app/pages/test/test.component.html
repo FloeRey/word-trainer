@@ -1,20 +1,107 @@
-<div class="flex justify-center container flex-col gap-4">
-  @if(trainingWords){ @if(trainingWords.length > 0 ){ @if(activeTestWord() ){
+<div class="container mt-8">
+  @if(testWords && testWords.length){ @if(showResults()){
 
-  <h4>Richtige Punkte : {{ testResult() }}</h4>
+  <div class="my-3">Deine Punkte : {{ testResult().points }}</div>
+  <div class="my-3">Deine Zeit : {{ testResult().time }}</div>
 
-  <div>
-    Wort in {{ activeTestWord()!.show.language }}:
-    {{ activeTestWord()!.show.word }}
+  <h4 class="mt-4">Richtige Wörter</h4>
+  <div class="flex gap-2 mb-4 flex-wrap">
+    @for(rightWord of testResult().words.right;track rightWord){
+    <div class="border rounded px-4">
+      {{ rightWord.show.word
+      }}<span class="text-xs"> ({{ rightWord.show.language }})</span> :
+      {{ rightWord.search.word
+      }}<span class="text-xs"> ({{ rightWord.search.language }}) </span>
+    </div>
+    }
   </div>
-  <div class="flex flex-col">
-    <div>gesuchtes wort in {{ activeTestWord()!.search.language }}</div>
-    <input hlmInput [(ngModel)]="resultWord" />
+
+  <h4 class="mt-4">Falsche Wörter</h4>
+  <div class="flex gap-2 mb-4 flex-wrap">
+    @for(wrongWord of testResult().words.wrong;track wrongWord){
+    <div class="border rounded px-4">
+      {{ wrongWord.show.word }}
+      <span class="text-xs"> ({{ wrongWord.show.language }}) </span>:
+      {{ wrongWord.search.word }}
+      <span class="text-xs"> ({{ wrongWord.search.language }}) </span>
+    </div>
+    }
   </div>
-  <div class="flex gap-4">
-    <button hlmBtn variant="secondary" (click)="checkWord()">next</button>
+  <button (click)="resett()" hlmBtn class="mt-4">Neuer Versuch</button>
+
+  }@else{
+
+  <div class="flex justify-center container flex-col gap-4">
+    @if(!isRunning()){
+    <!-- Setup -->
+    <div class="font-bold text-lg mt-4">Einstellungen:</div>
+
+    <input
+      hlmInput
+      placeholder="nötige Trefferquote"
+      type="number"
+      [(ngModel)]="testSetup().neededSuccessWords"
+    />
+    <div class="text-xs mt-2">
+      Sobald nicht erreicht, wird der Test abgebrochen
+    </div>
+
+    <input
+      hlmInput
+      placeholder="Anzahl Wörter"
+      type="number"
+      name="wordCount"
+      #wordCount="ngModel"
+      [(ngModel)]="testSetup().wordCount"
+      min="1"
+    />
+    @if(wordCount.invalid && wordCount.touched){
+    <div class="text-red-500">Please enter a number greater than zero.</div>
+    }
+
+    <div class="text-xs mt-2">ohne Eingabe werden alle Wörter abgefragt</div>
+
+    <input
+      hlmInput
+      placeholder="maximale Prüfungsdauer in minuten"
+      type="number"
+      name="testTimer"
+      [(ngModel)]="testSetup().testTimer"
+    />
+
+    <div class="text-xs mt-2">ohne Eingabe gibt es keine Zeitlimite</div>
+
+    <button hlmBtn (click)="start()" [disabled]="wordCount.invalid">
+      Test Starten
+    </button>
+    }@else{ @if(testWords){ @if(testWords.length > 0 ){ @if(activeTestWord() ){
+    <button hlmBtn variant="destructive" (click)="cancelTest()">
+      Test Abbrechen
+    </button>
+    <div class="text-2xl mt-5">
+      Wort in
+      {{ configNaming[activeTestWord()!.show.language] }}:
+      <span class="font-bold">{{ activeTestWord()!.show.word }}</span>
+    </div>
+
+    <input
+      hlmInput
+      placeholder="gesuchtes wort in {{
+        configNaming[activeTestWord()!.search.language]
+      }}"
+      [(ngModel)]="resultWord"
+      (keydown.enter)="checkWord()"
+    />
+
+    <div class="flex gap-4 items-center">
+      <button hlmBtn variant="secondary" (click)="checkWord()">
+        Nächstes Wort
+      </button>
+    </div>
+    } } }@else{ ... lade Wörter } }
   </div>
-  } }@else{ no words available } }@else{ loading words... }
+
+  } }@else{
+  <div class="text-center">Keine Wörter erstellt</div>
+  }
 </div>
-
-<a [routerLink]="['/']"> Test Abbrechen</a>

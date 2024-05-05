@@ -1,4 +1,22 @@
-# WordstrainerHmr
+# Wordstrainer
+
+## Description
+
+This project is in development mode and may still contain some bugs. This app allows you to define words and learn them in different languages.
+
+## Config
+In config.ts, you can configure the available languages and rename your pages.
+
+#### Training
+In Training mode, only words that have at least two available translations among the selected languages in your configuration will be included. Words are assigned a quality score, shown with a color bar, after being tested at least once.
+
+#### Test
+Set up your test and start. After completion, you'll see the results.
+
+##### Issues
+I encountered an issue with the grid-cols-x class from Tailwind. I'm unsure of the origin of this error, but it seems to have disappeared.
+
+## Installation Information
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.6.
 
@@ -13,15 +31,3 @@ Run `ng generate component component-name` to generate a new component. You can 
 ## Build
 
 Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.

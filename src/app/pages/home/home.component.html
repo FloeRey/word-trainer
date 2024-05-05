@@ -1,101 +1,118 @@
-<div class="flex fixed bottom-0 justify-evenly bg-slate-600 w-full p-4 z-20">
-  <button variant="secondary" hlmBtn (click)="wordService.loadExample()">
-    load example list
-  </button>
-  <button hlmBtn (click)="showModalForCreating()">createNew</button>
+<div class="mt-6">
+  @if(languages()){
+  <div
+    class="flex fixed left-0 bottom-0 justify-evenly bg-slate-600 w-full z-20 h-[80px] items-center"
+  >
+    <button variant="destructive" hlmBtn (click)="wordService.removeAll()">
+      Alle entfernen
+    </button>
+    <button variant="secondary" hlmBtn (click)="wordService.loadExample()">
+      Test Liste
+    </button>
+    <button hlmBtn (click)="showModalForCreating()">Neu</button>
+  </div>
 
-  <button variant="destructive" hlmBtn (click)="wordService.removeAll()">
-    remove all words
-  </button>
-</div>
-
-<dialog #newWordDialog>
-  <form (ngSubmit)="submit()">
-    @for(lang of languages(); track lang){
-    <input
-      class="w-80"
-      hlmInput
-      placeholder="{{ lang }}"
-      [(ngModel)]="newWord[lang]"
-      name="{{ lang }}"
-      type="text"
-    />
-    }
-    <button hlmBtn type="submit">Save</button>
-  </form>
-</dialog>
-<dialog #optionsDialog>
-  @if(activeWord){
-  <form (ngSubmit)="updateWord()">
-    @for(lang of languages(); track lang){
-    <input
-      class="w-80 my-2"
-      hlmInput
-      placeholder="{{ lang }}"
-      [(ngModel)]="activeWord[lang]"
-      name="{{ lang }}"
-      type="text"
-    />
-    }
-    <div class="flex w-full justify-around">
-      <button hlmBtn type="submit" [disabled]="loading()">Update</button>
+  <dialog #newWordDialog class="rounded">
+    <form (ngSubmit)="submit()" class="p-4">
+      @for(lang of languages(); track lang){
+      <input
+        class="w-80 my-2"
+        hlmInput
+        placeholder="{{ lang }}"
+        [(ngModel)]="newWord[lang]"
+        name="{{ lang }}"
+        type="text"
+      />
+      }
       <button
         hlmBtn
         type="button"
-        variant="destructive"
-        (click)="deleteWord()"
-        [disabled]="loading()"
-      >
-        <hlm-icon
-          size="sm"
-          name="radixPadding"
-          class="mr-2"
-          [class.hidden]="!loading()"
-        />
-        <hlm-icon size="sm" name="radixTrash" [class.hidden]="loading()" />
-      </button>
-
-      <button
-        hlmBtn
-        type="button"
-        (click)="optionsDialog.close()"
+        class="mx-2"
+        (click)="newWordDialog.close()"
         variant="outline"
         [disabled]="loading()"
       >
         Cancel
       </button>
-    </div>
-  </form>
-  }
-</dialog>
-
-<div class="grid grid-cols-{{ languages().length }} gap-2 place-items-center">
-  @if(words().length){ @for( word of words(); track word){ @if($index === 0){
-  @for(lang of languages(); track lang){
-  <div class="flex gap-3">
-    <h4 class="text-2xl font-bold">{{ lang }}</h4>
-    <button hlmBtn size="icon" variant="outline" (click)="handleSort(lang)">
-      <hlm-icon size="sm" name="radixAlignBaseline" />
-    </button>
-  </div>
-
-  } } @for(lang of languages(); track lang){
-  <div class="py-4 relative word-pair w-full">
-    {{ word[lang] }}
-    @if($index === languages().length -1){
-    <button
-      class="word-pair__options"
-      hlmBtn
-      size="icon"
-      variant="outline"
-      (click)="showModalForOptions(word)"
-    >
-      <hlm-icon size="sm" name="radixActivityLog" />
-    </button>
+      <button hlmBtn type="submit">Save</button>
+    </form>
+  </dialog>
+  <dialog #optionsDialog class="rounded">
+    @if(activeWord){
+    <form (ngSubmit)="updateWord()" class="p-4">
+      @for(lang of languages(); track lang){
+      <input
+        class="w-80 my-2"
+        hlmInput
+        placeholder="{{ lang }}"
+        [(ngModel)]="activeWord[lang]"
+        name="{{ lang }}"
+        type="text"
+      />
+      }
+      <div class="flex w-full justify-around">
+        <button
+          hlmBtn
+          type="button"
+          variant="destructive"
+          (click)="deleteWord()"
+          [disabled]="loading()"
+        >
+          <hlm-icon
+            size="sm"
+            name="radixPadding"
+            class="mr-2"
+            [class.hidden]="!loading()"
+          />
+          <hlm-icon size="sm" name="radixTrash" [class.hidden]="loading()" />
+        </button>
+        <button
+          hlmBtn
+          type="button"
+          (click)="optionsDialog.close()"
+          variant="outline"
+          [disabled]="loading()"
+        >
+          Cancel
+        </button>
+        <button hlmBtn type="submit" [disabled]="loading()">Update</button>
+      </div>
+    </form>
     }
-  </div>
+  </dialog>
+  @if(words().length){
+  <div
+    [ngClass]="getGridColsClass()"
+    class="container grid gap-2 place-items-center mt-8 pb-[80px] relative"
+  >
+    @for( word of words(); track word){ @if($index === 0){ @for(lang of
+    languages(); track lang){
+    <div class="flex gap-3">
+      <h4 class="text-2xl font-bold">{{ lang }}</h4>
+      <button hlmBtn size="icon" variant="outline" (click)="handleSort(lang)">
+        <hlm-icon size="sm" name="radixAlignBaseline" />
+      </button>
+    </div>
 
-  } } }@else{
-  <div>no words in your list</div>
-  }
+    } } @for(lang of languages(); track lang){
+    <div class="py-2 word-pair">
+      {{ word[lang] }}
+      @if($index === languages().length -1){
+      <button
+        class="word-pair__options"
+        hlmBtn
+        size="icon"
+        variant="outline"
+        (click)="showModalForOptions(word)"
+      >
+        <hlm-icon size="sm" name="radixActivityLog" />
+      </button>
+      }
+    </div>
+
+    } }
+  </div>
+  }@else{
+  <div class="text-center">Keine Wörter erstellt</div>
+  } }@else{ ... lade sprachen }
 </div>

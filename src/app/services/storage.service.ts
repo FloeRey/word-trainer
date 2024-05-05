@@ -12,7 +12,7 @@ export class StorageService {
   }
 
   getWordsQualityFromLocalStorage(): Quality {
-    return JSON.parse(localStorage.getItem('profile=1') ?? '{}');
+    return JSON.parse(localStorage.getItem('quality') ?? '{}');
   }
 
   updateLocalStorage(words: Word[]) {
@@ -20,7 +20,7 @@ export class StorageService {
   }
 
   updateLocalStorageQuality(quality: Quality) {
-    localStorage.setItem('profile=1', JSON.stringify(quality));
+    localStorage.setItem('quality', JSON.stringify(quality));
   }
 
   async updateUser(name: string) {

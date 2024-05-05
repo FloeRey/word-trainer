@@ -31,4 +31,16 @@ export class UtilsService<T> {
     }
     return array;
   }
+
+  compareWords(word1: string, word2: string) {
+    return word1.toLowerCase() === word2.toLowerCase();
+  }
+
+  calcTimeToString(time: number, unit: string) {
+    if (unit === 's') {
+      return `${(time / 60).toFixed(2)} min`;
+    }
+
+    return `${time}`;
+  }
 }

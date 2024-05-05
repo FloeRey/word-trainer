@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './components/header/header.component';
 
@@ -13,6 +13,6 @@ import { StatusService } from './services/status.service';
 })
 export class AppComponent {
   statusService = inject(StatusService);
-  title = 'wordstrainer_hmr';
+  title = 'wordstrainer';
   hasUser = this.statusService.user;
 }

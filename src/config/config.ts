@@ -1,21 +1,30 @@
+import { AvailableLanguages } from './../app/types/word';
+
 export const config = {
   languages: {
-    de: false,
+    de: true,
     en: true,
     fr: true,
     it: true,
   },
+
+  naming: {
+    de: 'deutsch',
+    en: 'englisch',
+    fr: 'französisch',
+    it: 'italienisch',
+  },
   tabs: [
     {
-      name: 'home',
+      name: 'Home',
       url: '',
     },
     {
-      name: 'training',
+      name: 'Training',
       url: 'training',
     },
     {
-      name: 'test',
+      name: 'Test',
       url: 'test',
     },
   ],

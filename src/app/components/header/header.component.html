@@ -1,5 +1,11 @@
-<div class="flex gap-12 p-4 text-2xl font-bold w-full justify-center">
+<nav class="flex sm:gap-12 gap-6 p-4 text-2xl w-full justify-center nav">
   @if(!isOnTest()){ @for(tab of tabs; track tab){
-  <a routerLink="{{ tab.url }}">{{ tab.name }}</a>
+  <a
+    class="nav__item"
+    [routerLink]="tab.url"
+    routerLinkActive="active"
+    [routerLinkActiveOptions]="{ exact: true }"
+    >{{ tab.name }}</a
+  >
   } }
-</div>
+</nav>

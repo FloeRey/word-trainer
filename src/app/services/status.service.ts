@@ -1,6 +1,6 @@
 import { StorageService } from './storage.service';
 import { Injectable, computed, inject, signal } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, TimeInterval } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',

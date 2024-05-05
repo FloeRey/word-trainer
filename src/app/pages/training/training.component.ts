@@ -1,8 +1,8 @@
+import { StatusService } from './../../services/status.service';
 import { UtilsService } from './../../services/utils.service';
 import {
   ChangeDetectionStrategy,
   Component,
-  computed,
   inject,
   signal,
 } from '@angular/core';
@@ -14,17 +14,17 @@ import { HlmInputDirective } from '../../../../libs/ui/ui-input-helm/src/lib/hlm
 import { HlmButtonDirective } from '../../../../libs/ui/ui-button-helm/src/lib/hlm-button.directive';
 import { HlmIconComponent } from '../../../../libs/ui/ui-icon-helm/src/lib/hlm-icon.component';
 import { provideIcons } from '@ng-icons/core';
-import { radixHeartFilled } from '@ng-icons/radix-icons';
+import { radixEyeOpen, radixHeartFilled } from '@ng-icons/radix-icons';
 import { config } from '../../../config/config';
 
 type ActiveWord = {
   show: {
     word: string;
-    language: string;
+    language: AvailableLanguages;
   };
   search: {
     word: string;
-    language: string;
+    language: AvailableLanguages;
   };
   id: string;
 };
@@ -42,6 +42,7 @@ type ActiveWord = {
   providers: [
     provideIcons({
       radixHeartFilled,
+      radixEyeOpen,
     }),
   ],
   templateUrl: './training.component.html',
@@ -51,58 +52,87 @@ type ActiveWord = {
 export class TrainingComponent {
   wordService = inject(WordService);
   utilsService = inject(UtilsService);
+  statusService = inject(StatusService);
 
   trainingWords = this.wordService.getTrainingWords();
   qualitys = this.wordService.getWordsQuality();
 
+  configNaming: { [key in AvailableLanguages]: string } = config.naming;
   activeTraningWord = signal<ActiveWord | undefined>(undefined);
   resultWord?: string;
-
   isSuccess = signal(false);
+  isCheated = signal(false);
 
   ngOnInit() {
-    console.log(this.trainingWords);
-    this.nextWord();
+    if (this.trainingWords.length) {
+      this.nextWord();
+    }
   }
 
   nextWord() {
-    if (this.trainingWords.length) {
-      this.isSuccess.set(false);
-      this.activeTraningWord.set(this.takeWord());
-    }
-  }
-
-  onTrainWordChange(newValue: string) {
-    if (newValue === this.activeTraningWord()!.search.word) {
-      this.isSuccess.set(true);
-    }
-  }
-
-  getRandomWord(words: Word[]): Word {
-    const random = Math.floor(Math.random() * (this.trainingWords.length - 1));
-    return words[random];
-  }
-
-  takeWord() {
-    const word = this.getRandomWord(this.trainingWords);
-    const availableLanguages = Object.keys(word).filter((key) => key !== 'id');
-    const shuffledArray = this.utilsService.shuffleArray(availableLanguages);
-
-    return {
-      show: {
-        word: word[shuffledArray[0] as AvailableLanguages]!,
-        language: shuffledArray[0],
-      },
-      search: {
-        word: word[shuffledArray[1] as AvailableLanguages]!,
-        language: shuffledArray[1],
-      },
-      id: word.id,
-    };
+    this.isSuccess.set(false);
+    this.isCheated.set(false);
+    this.resultWord = '';
+    this.activeTraningWord.set(this.takeWord());
   }
 
   showResult() {
     this.resultWord = this.activeTraningWord()!.search.word!;
     this.wordService.quality_sub(this.activeTraningWord()!.id);
+    this.isCheated.set(true);
+  }
+
+  onTrainWordChange(newValue: string) {
+    if (
+      this.utilsService.compareWords(
+        newValue,
+        this.activeTraningWord()!.search.word
+      )
+    ) {
+      this.isSuccess.set(true);
+    }
+  }
+
+  getRandomWord(words: Word[]): Word {
+    let random = Math.floor(Math.random() * (this.trainingWords.length - 1));
+    let x = 0;
+    while (x < 10) {
+      if (
+        !this.qualitys()[words[random].id] ||
+        this.qualitys()[words[random].id] > 0.3
+      ) {
+        random = Math.floor(Math.random() * (this.trainingWords.length - 1));
+      } else {
+        break;
+      }
+      x++;
+    }
+
+    return words[random];
+  }
+
+  takeWord() {
+    const word = this.getRandomWord(this.trainingWords);
+    const usedLanguages = Object.entries(config.languages)
+      .filter(([language, isAvailable]) => isAvailable)
+      .map((e) => e[0]);
+
+    const availableLanguages = Object.keys(word).filter(
+      (key) => key !== 'id' && usedLanguages.indexOf(key) !== -1
+    );
+
+    const shuffledArray = this.utilsService.shuffleArray(availableLanguages);
+
+    return {
+      show: {
+        word: word[shuffledArray[0] as AvailableLanguages]!,
+        language: shuffledArray[0] as AvailableLanguages,
+      },
+      search: {
+        word: word[shuffledArray[1] as AvailableLanguages]!,
+        language: shuffledArray[1] as AvailableLanguages,
+      },
+      id: word.id,
+    };
   }
 }

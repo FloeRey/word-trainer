@@ -1,5 +1,10 @@
 import { StatusService } from './../../services/status.service';
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  signal,
+} from '@angular/core';
 import {
   HlmTabsComponent,
   HlmTabsContentDirective,
@@ -8,7 +13,8 @@ import {
 } from '@spartan-ng/ui-tabs-helm';
 
 import { config } from '../../../config/config';
-import { RouterLink } from '@angular/router';
+import { RouterLink, RouterLinkActive } from '@angular/router';
+
 @Component({
   selector: 'app-header',
   standalone: true,
@@ -18,10 +24,11 @@ import { RouterLink } from '@angular/router';
     HlmTabsListComponent,
     HlmTabsTriggerDirective,
     RouterLink,
+    RouterLinkActive,
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
-  changeDetection : ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderComponent {
   tabs = config.tabs;

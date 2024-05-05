@@ -1,29 +1,55 @@
-<div class="flex justify-center container flex-col gap-4">
-  @if(trainingWords){ @if(trainingWords.length > 0 ){ @if(activeTraningWord() ){
-  quality : {{ qualitys()[activeTraningWord()!.id] }}
-  <div>
-    Wort in {{ activeTraningWord()!.show.language }}:
-    {{ activeTraningWord()!.show.word }}
-  </div>
-  <div class="flex flex-col">
-    <div>gesuchtes wort in {{ activeTraningWord()!.search.language }}</div>
+<div class="mt-6">
+  <div class="flex justify-center container flex-col gap-4">
+    @if(trainingWords){ @if(trainingWords.length > 0 ){ @if(activeTraningWord()
+    ){
+
+    <div
+      class="flex gap-4 flex-col sm:items-center sm:flex-row mt-8 mb-4"
+      [class.invisible]="qualitys()[activeTraningWord()!.id] === undefined"
+    >
+      <div>schwierigkeit</div>
+      <div
+        id="qualityIndicator"
+        class="w-full h-[10px] rounded-md"
+        [style.--indicator-value]="qualitys()[activeTraningWord()!.id] + '%'"
+      ></div>
+    </div>
+
+    <div class="text-2xl mt-5">
+      Wort in
+      {{ configNaming[activeTraningWord()!.show.language] }}:
+      <span class="font-bold">{{ activeTraningWord()!.show.word }}</span>
+    </div>
+
     <input
       hlmInput
+      placeholder="gesuchtes wort in {{
+        configNaming[activeTraningWord()!.search.language]
+      }}"
       [(ngModel)]="resultWord"
       (ngModelChange)="onTrainWordChange($event)"
+      [disabled]="isSuccess() || isCheated()"
     />
-  </div>
-  <div class="flex gap-4">
-    @if(isSuccess()){
-    <div class="flex items-center text-green-600">
-      <hlm-icon size="sm" name="radixHeartFilled" class="text-red-600" />
-      Gratulation!
+
+    <div class="flex gap-4 items-center">
+      @if(isSuccess()){
+      <div class="flex items-center text-green-600">
+        <hlm-icon size="sm" name="radixHeartFilled" class="text-red-600" />
+        Gratulation!
+      </div>
+      }@else{ @if(isCheated()){
+      <div class="text-sm flex items-center gap-3">
+        <hlm-icon size="sm" name="radixEyeOpen" class="text-red-600" />
+        Vielleicht beim nächsten Mal!
+      </div>
+      }@else{
+      <button hlmBtn (click)="showResult()">showResult</button>
+      } } @if(trainingWords.length > 1 ){
+      <button hlmBtn variant="secondary" (click)="nextWord()">next</button>
+      }
     </div>
-    }@else{
-    <button hlmBtn (click)="showResult()">showResult</button>
-    } @if(trainingWords.length > 1 ){
-    <button hlmBtn variant="secondary" (click)="nextWord()">next</button>
-    }
+    } }@else{
+    <div class="text-center">Keine Wörter erstellt</div>
+    } }@else{ ...lade Wörter}
   </div>
-  } }@else{ no words available } }@else{ loading words... }
 </div>

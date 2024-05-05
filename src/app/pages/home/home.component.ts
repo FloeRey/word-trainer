@@ -13,11 +13,10 @@ import { config } from '../../../config/config';
 import { FormsModule } from '@angular/forms';
 import { HlmButtonDirective } from '../../../../libs/ui/ui-button-helm/src/lib/hlm-button.directive';
 import { provideIcons } from '@ng-icons/core';
-
 import { HlmIconComponent } from '@spartan-ng/ui-icon-helm';
 import { HlmInputDirective } from '../../../../libs/ui/ui-input-helm/src/lib/hlm-input.directive';
 import { CommonModule } from '@angular/common';
-import { WordPairComponent } from '../../components/word-pair/word-pair.component';
+
 import {
   radixAlignBaseline,
   radixActivityLog,
@@ -34,7 +33,6 @@ import {
     CommonModule,
     FormsModule,
     HlmButtonDirective,
-    WordPairComponent,
   ],
   providers: [
     provideIcons({
@@ -72,6 +70,12 @@ export class HomeComponent {
     this.closeModals();
   }
 
+  getGridColsClass() {
+    const languageCount = this.languages().length;
+    const count = Math.max(1, Math.min(languageCount, 12));
+    return `grid-cols-${count}`;
+  }
+
   updateWord() {
     this.loading.set(true);
     this.wordService.updateWord(this.activeWord!);
@@ -81,7 +85,6 @@ export class HomeComponent {
 
   async deleteWord() {
     this.loading.set(true);
-    //assuming we have e DB call
     await this.wordService.deleteWord(this.activeWord!.id);
     this.closeModals();
     this.loading.set(false);

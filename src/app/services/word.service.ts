@@ -1,15 +1,13 @@
 import {
   Injectable,
-  Signal,
   WritableSignal,
   computed,
-  effect,
   inject,
   signal,
 } from '@angular/core';
 import { AvailableLanguages, Quality, Word } from '../types/word';
 import { StorageService } from './storage.service';
-import { Subject, firstValueFrom } from 'rxjs';
+import { firstValueFrom } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { config } from '../../config/config';
 
@@ -66,11 +64,7 @@ export class WordService {
     return computed(() => this.wordsQuality());
   }
 
-  public getWords(id?: string) {
-    // if (id) {
-    //   return computed(() => Object.keys(this.words()).find((e) => e === id));
-    // }
-    // console.log(this.words());
+  public getWords() {
     return computed(() => this.words());
   }
 
@@ -82,16 +76,14 @@ export class WordService {
   }
 
   getTrainingWords() {
+    const usedLanguages = Object.entries(config.languages)
+      .filter(([language, isAvailable]) => isAvailable)
+      .map((e) => e[0]);
+
     return this.words().filter((word) => {
       const wordHasMultipleLanguages = Object.entries(word).filter(
-        ([key, value]) =>
-          value &&
-          Object.entries(config.languages)
-            .filter(([language, isAvailable]) => isAvailable)
-            .map((e) => e[0])
-            .indexOf(key) !== -1
+        ([key, value]) => value && usedLanguages.indexOf(key) !== -1
       );
-
       return wordHasMultipleLanguages.length > 1;
     });
   }
@@ -107,6 +99,7 @@ export class WordService {
     }
     this.wordsQuality()[id] -= this.wordsQuality()[id] > 0.01 ? 0.01 : 0;
     this.wordsQuality()[id] = parseFloat(this.wordsQuality()[id].toFixed(2));
+
     this.storageService.updateLocalStorageQuality(this.wordsQuality());
   }
 

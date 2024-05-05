@@ -1,0 +1,14 @@
+#qualityIndicator {
+  --red-color: rgb(248, 75, 44);
+  --green-color: rgb(64, 234, 64);
+
+  box-shadow: 0 0 12px black;
+
+  background: linear-gradient(
+    90deg,
+    var(--green-color) 0%,
+    var(--green-color) calc(var(--indicator-value) * 100),
+    var(--red-color) calc(var(--indicator-value) * 100),
+    var(--red-color) 100%
+  );
+}
