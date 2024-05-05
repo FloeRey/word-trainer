@@ -1,7 +1,9 @@
-export const config = {
+import { Config } from '../app/types/config';
+
+export const config: Config = {
   languages: {
     de: true,
-    en: true,
+    en: false,
     fr: false,
     it: false,
   },

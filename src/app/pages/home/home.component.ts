@@ -2,14 +2,11 @@ import { UtilsService } from './../../services/utils.service';
 import {
   ChangeDetectionStrategy,
   Component,
-  ElementRef,
-  ViewChild,
   inject,
   signal,
 } from '@angular/core';
 import { AvailableLanguages, Word } from '../../types/word';
 import { WordService } from '../../services/word.service';
-import { config } from '../../../config/config';
 import { FormsModule } from '@angular/forms';
 import { HlmButtonDirective } from '../../../../libs/ui/ui-button-helm/src/lib/hlm-button.directive';
 import { provideIcons } from '@ng-icons/core';
@@ -22,7 +19,38 @@ import {
   radixActivityLog,
   radixPadding,
   radixTrash,
+  radixPencil2,
+  radixPlus,
 } from '@ng-icons/radix-icons';
+import {
+  HlmDialogComponent,
+  HlmDialogContentComponent,
+  HlmDialogDescriptionDirective,
+  HlmDialogFooterComponent,
+  HlmDialogHeaderComponent,
+  HlmDialogTitleDirective,
+} from '@spartan-ng/ui-dialog-helm';
+import {
+  BrnAlertDialogContentDirective,
+  BrnAlertDialogTriggerDirective,
+} from '@spartan-ng/ui-alertdialog-brain';
+import {
+  HlmAlertDialogActionButtonDirective,
+  HlmAlertDialogCancelButtonDirective,
+  HlmAlertDialogComponent,
+  HlmAlertDialogContentComponent,
+  HlmAlertDialogDescriptionDirective,
+  HlmAlertDialogFooterComponent,
+  HlmAlertDialogHeaderComponent,
+  HlmAlertDialogOverlayDirective,
+  HlmAlertDialogTitleDirective,
+} from '@spartan-ng/ui-alertdialog-helm';
+
+import {
+  BrnDialogContentDirective,
+  BrnDialogTriggerDirective,
+} from '@spartan-ng/ui-dialog-brain';
+import { StatusService } from '../../services/status.service';
 
 @Component({
   selector: 'app-home',
@@ -32,7 +60,30 @@ import {
     HlmInputDirective,
     CommonModule,
     FormsModule,
+
     HlmButtonDirective,
+
+    HlmDialogComponent,
+    HlmDialogContentComponent,
+    HlmDialogDescriptionDirective,
+    HlmDialogFooterComponent,
+    HlmDialogHeaderComponent,
+    HlmDialogTitleDirective,
+    BrnDialogContentDirective,
+    BrnDialogTriggerDirective,
+
+    HlmAlertDialogComponent,
+    HlmAlertDialogOverlayDirective,
+    HlmAlertDialogHeaderComponent,
+    HlmAlertDialogFooterComponent,
+    HlmAlertDialogTitleDirective,
+    HlmAlertDialogDescriptionDirective,
+    HlmAlertDialogCancelButtonDirective,
+    HlmAlertDialogActionButtonDirective,
+    HlmAlertDialogContentComponent,
+
+    BrnAlertDialogContentDirective,
+    BrnAlertDialogTriggerDirective,
   ],
   providers: [
     provideIcons({
@@ -40,6 +91,8 @@ import {
       radixActivityLog,
       radixPadding,
       radixTrash,
+      radixPencil2,
+      radixPlus,
     }),
   ],
   templateUrl: './home.component.html',
@@ -49,63 +102,68 @@ import {
 export class HomeComponent {
   wordService = inject(WordService);
   utilsService = inject(UtilsService);
+  statusService = inject(StatusService);
   words = this.wordService.getWords();
-
-  configNaming = config.naming;
+  config = this.statusService.config;
 
   loading = signal(false);
 
-  @ViewChild('newWordDialog') newWordDialog!: ElementRef;
-  @ViewChild('optionsDialog') optionsDialog!: ElementRef;
-
-  languages = signal(
-    Object.entries(config.languages)
-      .filter((res) => res[1])
-      .map((res) => res[0] as AvailableLanguages)
-  );
-
   newWord: { [key: string]: string } = {};
-  activeWord?: Word;
+  selectedWord?: Word;
 
-  submit() {
-    this.wordService.add(this.newWord);
-    this.closeModals();
+  activeDialog = signal('');
+
+  loadExampleList() {
+    this.wordService.loadExample();
+  }
+
+  removeAll() {
+    this.wordService.removeAll();
+  }
+
+  closeDialog() {
+    this.activeDialog.set('');
   }
 
   getGridColsClass() {
-    const languageCount = this.languages().length;
+    const languageCount = this.config().languageArray.length;
     const count = Math.max(1, Math.min(languageCount, 12));
     return `grid-cols-${count + 1}`;
   }
 
+  submitNewWord() {
+    if (Object.keys(this.newWord).length) {
+      this.wordService.add(this.newWord);
+    }
+
+    this.closeDialog();
+  }
+
   updateWord() {
-    this.loading.set(true);
-    this.wordService.updateWord(this.activeWord!);
-    this.closeModals();
-    this.loading.set(false);
+    if (this.selectedWord) {
+      this.loading.set(true);
+      if (Object.keys(this.selectedWord).length) {
+        this.wordService.updateWord(this.selectedWord);
+      } else {
+        this.wordService.deleteWord(this.selectedWord.id);
+      }
+      this.loading.set(false);
+    }
+    this.closeDialog();
   }
 
   async deleteWord() {
-    this.loading.set(true);
-    await this.wordService.deleteWord(this.activeWord!.id);
-    this.closeModals();
-    this.loading.set(false);
-  }
-
-  showModalForCreating() {
-    this.newWordDialog.nativeElement.showModal();
+    if (this.selectedWord) {
+      this.loading.set(true);
+      await this.wordService.deleteWord(this.selectedWord.id);
+      this.loading.set(false);
+    }
+    this.closeDialog();
   }
 
   showModalForOptions(word: Word) {
-    this.activeWord = word;
-    this.optionsDialog.nativeElement.showModal();
-  }
-
-  closeModals() {
-    this.newWord = {};
-    this.activeWord = undefined;
-    this.newWordDialog.nativeElement.close();
-    this.optionsDialog.nativeElement.close();
+    this.selectedWord = word;
+    this.activeDialog.set('options');
   }
 
   handleSort(lang: string) {

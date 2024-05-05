@@ -14,6 +14,10 @@ import {
 
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { provideIcons } from '@ng-icons/core';
+
+import { radixGear } from '@ng-icons/radix-icons';
+import { HlmIconComponent } from '@spartan-ng/ui-icon-helm';
 @Component({
   selector: 'app-header',
   standalone: true,
@@ -24,6 +28,12 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
     HlmTabsTriggerDirective,
     RouterLink,
     RouterLinkActive,
+    HlmIconComponent,
+  ],
+  providers: [
+    provideIcons({
+      radixGear,
+    }),
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
@@ -43,10 +53,11 @@ export class HeaderComponent {
       name: 'Test',
       url: 'test',
     },
-    // {
-    //   name: 'Settings',
-    //   url: 'settings',
-    // },
+    {
+      name: 'Settings',
+      url: 'settings',
+      icon: 'radixGear',
+    },
   ];
 
   isOnTest = signal(false);

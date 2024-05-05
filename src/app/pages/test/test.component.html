@@ -85,14 +85,14 @@
     </button>
     <div class="text-2xl mt-5">
       Wort in
-      {{ configNaming[activeTestWord()!.show.language] }}:
+      {{ config().conf.naming[activeTestWord()!.show.language] }}:
       <span class="font-bold">{{ activeTestWord()!.show.word }}</span>
     </div>
 
     <input
       hlmInput
       placeholder="gesuchtes wort in {{
-        configNaming[activeTestWord()!.search.language]
+        config().conf.naming[activeTestWord()!.search.language]
       }}"
       [(ngModel)]="resultWord"
       (keydown.enter)="checkWord()"

@@ -1,3 +1,4 @@
+import { StatusService } from './status.service';
 import {
   Injectable,
   WritableSignal,
@@ -9,13 +10,13 @@ import { AvailableLanguages, Quality, Word } from '../types/word';
 import { StorageService } from './storage.service';
 import { firstValueFrom } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { config } from '../../config/config';
 
 @Injectable({
   providedIn: 'root',
 })
 export class WordService {
   storageService = inject(StorageService);
+  statusService = inject(StatusService);
 
   constructor(private http: HttpClient) {}
 
@@ -76,13 +77,13 @@ export class WordService {
   }
 
   getTrainingWords() {
-    const usedLanguages = Object.entries(config.languages)
-      .filter(([language, isAvailable]) => isAvailable)
-      .map((e) => e[0]);
+    const config = this.statusService.config;
+    const usedLanguages = config().languageArray;
 
     return this.words().filter((word) => {
       const wordHasMultipleLanguages = Object.entries(word).filter(
-        ([key, value]) => value && usedLanguages.indexOf(key) !== -1
+        ([key, value]) =>
+          value && usedLanguages.indexOf(key as AvailableLanguages) !== -1
       );
       return wordHasMultipleLanguages.length > 1;
     });

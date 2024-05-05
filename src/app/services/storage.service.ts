@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Quality, Word } from '../types/word';
-
+import { config } from '../../config/config';
+import { Config } from '../types/config';
 @Injectable({
   providedIn: 'root',
 })
@@ -29,5 +30,14 @@ export class StorageService {
 
   readUser(): string | undefined {
     return localStorage.getItem('user') ?? undefined;
+  }
+
+  readConfig(): Config {
+    let ls_config = localStorage.getItem('config');
+    return ls_config ? JSON.parse(ls_config) : config;
+  }
+
+  updateConfigLocalStorage(config: Config) {
+    localStorage.setItem('config', JSON.stringify(config));
   }
 }

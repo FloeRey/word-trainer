@@ -15,7 +15,6 @@ import { HlmButtonDirective } from '../../../../libs/ui/ui-button-helm/src/lib/h
 import { HlmIconComponent } from '../../../../libs/ui/ui-icon-helm/src/lib/hlm-icon.component';
 import { provideIcons } from '@ng-icons/core';
 import { radixEyeOpen, radixHeartFilled } from '@ng-icons/radix-icons';
-import { config } from '../../../config/config';
 
 type ActiveWord = {
   show: {
@@ -56,8 +55,8 @@ export class TrainingComponent {
 
   trainingWords = this.wordService.getTrainingWords();
   qualitys = this.wordService.getWordsQuality();
+  config = this.statusService.config;
 
-  configNaming: { [key in AvailableLanguages]: string } = config.naming;
   activeTraningWord = signal<ActiveWord | undefined>(undefined);
   resultWord?: string;
   isSuccess = signal(false);
@@ -113,12 +112,11 @@ export class TrainingComponent {
 
   takeWord() {
     const word = this.getRandomWord(this.trainingWords);
-    const usedLanguages = Object.entries(config.languages)
-      .filter(([language, isAvailable]) => isAvailable)
-      .map((e) => e[0]);
+    const usedLanguages = this.config().languageArray;
 
     const availableLanguages = Object.keys(word).filter(
-      (key) => key !== 'id' && usedLanguages.indexOf(key) !== -1
+      (key) =>
+        key !== 'id' && usedLanguages.indexOf(key as AvailableLanguages) !== -1
     );
 
     const shuffledArray = this.utilsService.shuffleArray(availableLanguages);

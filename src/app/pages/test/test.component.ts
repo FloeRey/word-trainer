@@ -8,6 +8,7 @@ import { config } from '../../../config/config';
 import { HlmButtonDirective } from '../../../../libs/ui/ui-button-helm/src/lib/hlm-button.directive';
 import { HlmInputDirective } from '../../../../libs/ui/ui-input-helm/src/lib/hlm-input.directive';
 import { CommonModule } from '@angular/common';
+
 type ActiveWord = {
   show: {
     word: string;
@@ -32,7 +33,8 @@ export class TestComponent {
   utilsService = inject(UtilsService);
   testWords: Word[] = [...this.wordService.getTrainingWords()];
   activeTestWord = signal<ActiveWord | undefined>(undefined);
-  configNaming: { [key in AvailableLanguages]: string } = config.naming;
+  config = this.statusService.config;
+
   resultWord?: string;
 
   testResult = signal<{
@@ -85,6 +87,14 @@ export class TestComponent {
   resett() {
     this.isRunning.set(false);
     this.showResults.set(false);
+    this.testResult.set({
+      time: '0',
+      points: 0,
+      words: {
+        wrong: [],
+        right: [],
+      },
+    });
   }
 
   countTestTime() {
