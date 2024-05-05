@@ -15,7 +15,7 @@ Set up your test and start. After completion, you'll see the results.
 
 ## Installation Information
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.6.
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.6 and spartan/ui.
 
 ## Development server
 
