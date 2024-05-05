@@ -96,7 +96,6 @@ export class TestComponent {
     const testTimer = this.testSetup().testTimer;
 
     const count = () => {
-      console.log(this.runTime);
       this.runTime++;
       if (testTimer && this.runTime / 60 > testTimer) {
         this.cancelTest();
