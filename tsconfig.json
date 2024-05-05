@@ -17,12 +17,29 @@
     "target": "ESNext",
     "module": "ESNext",
     "useDefineForClassFields": false,
-    "lib": ["ESNext", "dom"],
+    "lib": [
+      "ESNext",
+      "dom"
+    ],
     "paths": {
-      "@spartan-ng/ui-tabs-helm": [".\\libs/ui/ui-tabs-helm/src/index.ts"],
-      "@spartan-ng/ui-input-helm": [".\\libs/ui/ui-input-helm/src/index.ts"],
-      "@spartan-ng/ui-button-helm": [".\\libs/ui/ui-button-helm/src/index.ts"],
-      "@spartan-ng/ui-icon-helm": [".\\libs/ui/ui-icon-helm/src/index.ts"]
+      "@spartan-ng/ui-tabs-helm": [
+        ".\\libs/ui/ui-tabs-helm/src/index.ts"
+      ],
+      "@spartan-ng/ui-input-helm": [
+        ".\\libs/ui/ui-input-helm/src/index.ts"
+      ],
+      "@spartan-ng/ui-button-helm": [
+        ".\\libs/ui/ui-button-helm/src/index.ts"
+      ],
+      "@spartan-ng/ui-icon-helm": [
+        ".\\libs/ui/ui-icon-helm/src/index.ts"
+      ],
+      "@spartan-ng/ui-switch-helm": [
+        ".\\libs/ui/ui-switch-helm/src/index.ts"
+      ],
+      "@spartan-ng/ui-label-helm": [
+        ".\\libs/ui/ui-label-helm/src/index.ts"
+      ]
     }
   },
   "angularCompilerOptions": {

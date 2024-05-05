@@ -41,5 +41,114 @@
   { "id": "22", "de": "Mond", "en": "Moon", "it": "Luna", "fr": "Lune" },
   { "id": "23", "de": "Stern", "en": "Star", "it": "Stella", "fr": "Étoile" },
   { "id": "24", "de": "Himmel", "en": "Sky", "it": "Cielo", "fr": "Ciel" },
-  { "id": "25", "de": "Erde", "en": "Earth", "it": "Terra", "fr": "Terre" }
+  { "id": "25", "de": "Erde", "en": "Earth", "it": "Terra", "fr": "Terre" },
+  { "id": "26", "de": "Blume", "en": "Flower", "it": "Fiore", "fr": "Fleur" },
+  { "id": "27", "de": "Tier", "en": "Animal", "it": "Animale", "fr": "Animal" },
+  { "id": "28", "de": "Vogel", "en": "Bird", "it": "Uccello", "fr": "Oiseau" },
+  {
+    "id": "29",
+    "de": "Flugzeug",
+    "en": "Airplane",
+    "it": "Aereo",
+    "fr": "Avion"
+  },
+  { "id": "30", "de": "Schiff", "en": "Ship", "it": "Nave", "fr": "Bateau" },
+  { "id": "31", "de": "Zug", "en": "Train", "it": "Treno", "fr": "Train" },
+  { "id": "32", "de": "Buch", "en": "Book", "it": "Libro", "fr": "Livre" },
+  {
+    "id": "33",
+    "de": "Computer",
+    "en": "Computer",
+    "it": "Computer",
+    "fr": "Ordinateur"
+  },
+  {
+    "id": "34",
+    "de": "Schwimmen",
+    "en": "Swimming",
+    "it": "Nuotare",
+    "fr": "Nager"
+  },
+  {
+    "id": "35",
+    "de": "Laufen",
+    "en": "Running",
+    "it": "Correre",
+    "fr": "Courir"
+  },
+  {
+    "id": "36",
+    "de": "Essen",
+    "en": "Eating",
+    "it": "Mangiare",
+    "fr": "Manger"
+  },
+  {
+    "id": "37",
+    "de": "Trinken",
+    "en": "Drinking",
+    "it": "Bere",
+    "fr": "Boire"
+  },
+  {
+    "id": "38",
+    "de": "Spielen",
+    "en": "Playing",
+    "it": "Giocare",
+    "fr": "Jouer"
+  },
+  { "id": "39", "de": "Kunst", "en": "Art", "it": "Arte", "fr": "Art" },
+  { "id": "40", "de": "Musik", "en": "Music", "it": "Musica", "fr": "Musique" },
+  { "id": "41", "de": "Film", "en": "Movie", "it": "Film", "fr": "Film" },
+  {
+    "id": "42",
+    "de": "Gespräch",
+    "en": "Conversation",
+    "it": "Conversazione",
+    "fr": "Conversation"
+  },
+  {
+    "id": "43",
+    "de": "Frühstück",
+    "en": "Breakfast",
+    "it": "Colazione",
+    "fr": "Petit-déjeuner"
+  },
+  {
+    "id": "44",
+    "de": "Mittagessen",
+    "en": "Lunch",
+    "it": "Pranzo",
+    "fr": "Déjeuner"
+  },
+  {
+    "id": "45",
+    "de": "Abendessen",
+    "en": "Dinner",
+    "it": "Cena",
+    "fr": "Dîner"
+  },
+  {
+    "id": "46",
+    "de": "Wandern",
+    "en": "Hiking",
+    "it": "Escursionismo",
+    "fr": "Randonnée"
+  },
+  { "id": "47", "de": "Rennen", "en": "Race", "it": "Gara", "fr": "Course" },
+  {
+    "id": "48",
+    "de": "Spaß",
+    "en": "Fun",
+    "it": "Divertimento",
+    "fr": "Amusement"
+  },
+  { "id": "49", "de": "Arbeit", "en": "Work", "it": "Lavoro", "fr": "Travail" },
+  {
+    "id": "50",
+    "de": "Fahrrad",
+    "en": "Bicycle",
+    "it": "Bicicletta",
+    "fr": "Vélo"
+  }
 ]

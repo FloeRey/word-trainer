@@ -12,9 +12,8 @@ import {
   HlmTabsTriggerDirective,
 } from '@spartan-ng/ui-tabs-helm';
 
-import { config } from '../../../config/config';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 @Component({
   selector: 'app-header',
   standalone: true,
@@ -31,13 +30,31 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderComponent {
-  tabs = config.tabs;
-  isOnTest = signal(false);
+  tabs = [
+    {
+      name: 'Home',
+      url: '',
+    },
+    {
+      name: 'Training',
+      url: 'training',
+    },
+    {
+      name: 'Test',
+      url: 'test',
+    },
+    // {
+    //   name: 'Settings',
+    //   url: 'settings',
+    // },
+  ];
 
+  isOnTest = signal(false);
   statusService = inject(StatusService);
+
   constructor() {
-    console.log('cons');
-    this.statusService.$isTestRunning_.subscribe({
+    /* Variant with Subscribe */
+    this.statusService.$isTestRunning_.pipe(takeUntilDestroyed()).subscribe({
       next: (e: boolean) => {
         this.isOnTest.set(e);
       },

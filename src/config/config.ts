@@ -1,11 +1,9 @@
-import { AvailableLanguages } from './../app/types/word';
-
 export const config = {
   languages: {
     de: true,
     en: true,
-    fr: true,
-    it: true,
+    fr: false,
+    it: false,
   },
 
   naming: {
@@ -14,18 +12,4 @@ export const config = {
     fr: 'französisch',
     it: 'italienisch',
   },
-  tabs: [
-    {
-      name: 'Home',
-      url: '',
-    },
-    {
-      name: 'Training',
-      url: 'training',
-    },
-    {
-      name: 'Test',
-      url: 'test',
-    },
-  ],
 };

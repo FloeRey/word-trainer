@@ -5,7 +5,7 @@
 This project is in development mode and may still contain some bugs. This app allows you to define words and learn them in different languages.
 
 ## Config
-In config.ts, you can configure the available languages and rename your pages.
+In config.ts, you can configure the available languages.
 
 #### Training
 In Training mode, only words that have at least two available translations among the selected languages in your configuration will be included. Words are assigned a quality score, shown with a color bar, after being tested at least once.

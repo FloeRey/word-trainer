@@ -51,6 +51,8 @@ export class HomeComponent {
   utilsService = inject(UtilsService);
   words = this.wordService.getWords();
 
+  configNaming = config.naming;
+
   loading = signal(false);
 
   @ViewChild('newWordDialog') newWordDialog!: ElementRef;
@@ -73,7 +75,7 @@ export class HomeComponent {
   getGridColsClass() {
     const languageCount = this.languages().length;
     const count = Math.max(1, Math.min(languageCount, 12));
-    return `grid-cols-${count}`;
+    return `grid-cols-${count + 1}`;
   }
 
   updateWord() {

@@ -83,34 +83,36 @@
   @if(words().length){
   <div
     [ngClass]="getGridColsClass()"
-    class="container grid gap-2 place-items-center mt-8 pb-[80px] relative"
+    class="container grid gap-6 sm:gap-4 place-items-center mt-8 pb-[80px] relative w-fit"
   >
     @for( word of words(); track word){ @if($index === 0){ @for(lang of
     languages(); track lang){
-    <div class="flex gap-3">
-      <h4 class="text-2xl font-bold">{{ lang }}</h4>
-      <button hlmBtn size="icon" variant="outline" (click)="handleSort(lang)">
-        <hlm-icon size="sm" name="radixAlignBaseline" />
-      </button>
+    <div class="flex flex-col gap-3 pr-2 justify-center text-center">
+      <div>
+        <button hlmBtn size="icon" variant="outline" (click)="handleSort(lang)">
+          <hlm-icon size="sm" name="radixAlignBaseline" />
+        </button>
+      </div>
+      <h4 class="font-bold uppercase">{{ lang }}</h4>
     </div>
 
-    } } @for(lang of languages(); track lang){
-    <div class="py-2 word-pair">
+    }
+    <div class="col-span-1"></div>
+    } @for(lang of languages(); track lang){
+    <div class="py-2 word-pair px-2 sm:px-6">
       {{ word[lang] }}
-      @if($index === languages().length -1){
-      <button
-        class="word-pair__options"
-        hlmBtn
-        size="icon"
-        variant="outline"
-        (click)="showModalForOptions(word)"
-      >
-        <hlm-icon size="sm" name="radixActivityLog" />
-      </button>
-      }
     </div>
-
-    } }
+    @if($index === languages().length -1){
+    <button
+      class="word-pair__options"
+      hlmBtn
+      size="icon"
+      variant="outline"
+      (click)="showModalForOptions(word)"
+    >
+      <hlm-icon size="sm" name="radixActivityLog" />
+    </button>
+    } } }
   </div>
   }@else{
   <div class="text-center">Keine Wörter erstellt</div>
