@@ -35,42 +35,47 @@
     @if(!isRunning()){
     <!-- Setup -->
     <div class="font-bold text-lg mt-4">Einstellungen:</div>
-
-    <input
-      hlmInput
-      placeholder="nötige Trefferquote"
-      type="number"
-      [(ngModel)]="testSetup().neededSuccessWords"
-    />
-    <div class="text-xs mt-2">
-      Sobald nicht erreicht, wird der Test abgebrochen
+    <div>
+      <input
+        class="w-full"
+        hlmInput
+        placeholder="nötige Trefferquote"
+        type="number"
+        [(ngModel)]="testSetup().neededSuccessWords"
+      />
+      <div class="text-xs mt-2">
+        Sobald nicht erreicht, wird der Test abgebrochen
+      </div>
     </div>
+    <div>
+      <input
+        class="w-full"
+        hlmInput
+        placeholder="Anzahl Wörter"
+        type="number"
+        name="wordCount"
+        #wordCount="ngModel"
+        [(ngModel)]="testSetup().wordCount"
+        min="1"
+      />
+      @if(wordCount.invalid && wordCount.touched){
+      <div class="text-red-500">Please enter a number greater than zero.</div>
+      }
 
-    <input
-      hlmInput
-      placeholder="Anzahl Wörter"
-      type="number"
-      name="wordCount"
-      #wordCount="ngModel"
-      [(ngModel)]="testSetup().wordCount"
-      min="1"
-    />
-    @if(wordCount.invalid && wordCount.touched){
-    <div class="text-red-500">Please enter a number greater than zero.</div>
-    }
+      <div class="text-xs mt-2">ohne Eingabe werden alle Wörter abgefragt</div>
+    </div>
+    <div>
+      <input
+        hlmInput
+        class="w-full"
+        placeholder="maximale Prüfungsdauer in minuten"
+        type="number"
+        name="testTimer"
+        [(ngModel)]="testSetup().testTimer"
+      />
 
-    <div class="text-xs mt-2">ohne Eingabe werden alle Wörter abgefragt</div>
-
-    <input
-      hlmInput
-      placeholder="maximale Prüfungsdauer in minuten"
-      type="number"
-      name="testTimer"
-      [(ngModel)]="testSetup().testTimer"
-    />
-
-    <div class="text-xs mt-2">ohne Eingabe gibt es keine Zeitlimite</div>
-
+      <div class="text-xs mt-2">ohne Eingabe gibt es keine Zeitlimite</div>
+    </div>
     <button hlmBtn (click)="start()" [disabled]="wordCount.invalid">
       Test Starten
     </button>
