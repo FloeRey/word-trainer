@@ -4,7 +4,7 @@ import { WordService } from '../../services/word.service';
 import { AvailableLanguages, Word } from '../../types/word';
 import { FormsModule } from '@angular/forms';
 import { StatusService } from '../../services/status.service';
-
+import { HlmBadgeDirective } from '@spartan-ng/ui-badge-helm';
 import { HlmButtonDirective } from '../../../../libs/ui/ui-button-helm/src/lib/hlm-button.directive';
 import { HlmInputDirective } from '../../../../libs/ui/ui-input-helm/src/lib/hlm-input.directive';
 import { CommonModule } from '@angular/common';
@@ -23,7 +23,13 @@ type ActiveWord = {
 @Component({
   selector: 'app-test',
   standalone: true,
-  imports: [FormsModule, HlmButtonDirective, HlmInputDirective, CommonModule],
+  imports: [
+    FormsModule,
+    HlmButtonDirective,
+    HlmInputDirective,
+    CommonModule,
+    HlmBadgeDirective,
+  ],
   templateUrl: './test.component.html',
   styleUrl: './test.component.scss',
 })
@@ -35,12 +41,13 @@ export class TestComponent {
   activeTestWord = signal<ActiveWord | undefined>(undefined);
   config = this.statusService.config;
 
-  resultWord?: string;
+  resultWord: string = '';
 
   testResult = signal<{
     time: string;
     points: number;
     words: { wrong: ActiveWord[]; right: ActiveWord[] };
+    cancelReason?: string;
   }>({
     time: '0',
     points: 0,
@@ -94,6 +101,7 @@ export class TestComponent {
         wrong: [],
         right: [],
       },
+      cancelReason: '',
     });
   }
 
@@ -117,7 +125,7 @@ export class TestComponent {
     count();
   }
 
-  cancelTest() {
+  cancelTest(reason?: string) {
     this.statusService.stopTest();
     this.showResults.set(true);
     this.isRunning.set(false);
@@ -125,40 +133,22 @@ export class TestComponent {
     this.testResult.update((e) => ({
       ...e,
       time: this.utilsService.calcTimeToString(this.runTime, 's'),
+      cancelReason: reason ?? '',
     }));
     clearTimeout(this.#timer);
   }
 
-  checkWord() {
-    const wordIndex = this.testWords.findIndex(
-      (word) => word.id === this.activeTestWord()!.id
-    );
-
-    let rightOrFalse = true;
-
-    if (this.resultWord) {
-      if (
-        this.utilsService.compareWords(
-          this.resultWord,
-          this.activeTestWord()!.search.word
-        )
-      ) {
-        this.testResult.update((e) => ({
-          ...e,
-          points: e.points + 1,
-          words: {
-            wrong: [...e.words.wrong],
-            right: [...e.words.right, this.activeTestWord()!],
-          },
-        }));
-      } else {
-        rightOrFalse = false;
-      }
+  updateStatistik(success: boolean) {
+    if (success) {
+      this.testResult.update((e) => ({
+        ...e,
+        points: e.points + 1,
+        words: {
+          wrong: [...e.words.wrong],
+          right: [...e.words.right, this.activeTestWord()!],
+        },
+      }));
     } else {
-      rightOrFalse = false;
-    }
-
-    if (!rightOrFalse) {
       this.testResult.update((e) => ({
         ...e,
         words: {
@@ -167,6 +157,19 @@ export class TestComponent {
         },
       }));
     }
+  }
+
+  checkWord() {
+    const wordIndex = this.testWords.findIndex(
+      (word) => word.id === this.activeTestWord()!.id
+    );
+
+    this.updateStatistik(
+      this.utilsService.compareWords(
+        this.resultWord,
+        this.activeTestWord()!.search.word
+      )
+    );
 
     this.testWords.splice(wordIndex, 1);
 
@@ -175,18 +178,21 @@ export class TestComponent {
         this.testWords.length + this.testResult().points <
         this.testSetup().neededSuccessWords!
       ) {
-        this.cancelTest();
+        this.cancelTest('Leider die Anzahl gefordeten Wörter nicht erreicht');
         return;
       }
     }
 
-    this.nextWord();
+    if (this.testWords.length <= 0) {
+      this.cancelTest('Alle Wörter abgefragt');
+    } else {
+      this.nextWord();
+    }
   }
 
   nextWord() {
     if (this.testWords.length) {
       this.resultWord = '';
-
       this.activeTestWord.set(this.takeWord());
     }
   }

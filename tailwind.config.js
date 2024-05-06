@@ -8,7 +8,12 @@ module.exports = {
     },
   ],
   theme: {
-    extend: {},
+
+    extend: {
+      fontSize: {
+        xxs: '0.55rem',
+      },
+    },
   },
   plugins: [],
 };

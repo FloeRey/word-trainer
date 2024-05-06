@@ -1,32 +1,38 @@
 <div class="container mt-8">
-  @if(testWords && testWords.length){ @if(showResults()){
+  @if(testWords && (testWords.length ||showResults() )){ @if(showResults()){
+  @if(testResult().cancelReason ){
+  <div class="text-lg my-3 font-bold">{{ testResult().cancelReason }}</div>
+  }
 
-  <div class="my-3">Deine Punkte : {{ testResult().points }}</div>
-  <div class="my-3">Deine Zeit : {{ testResult().time }}</div>
+  <div class="mt-4 font-bold">Deine Punkte : {{ testResult().points }}</div>
+  <div class="font-bold">Deine Zeit : {{ testResult().time }}</div>
 
-  <h4 class="mt-4">Richtige Wörter</h4>
+  @if(testResult().words.right.length){
+  <h4 class="mt-4 mb-1 font-bold">Richtig:</h4>
   <div class="flex gap-2 mb-4 flex-wrap">
     @for(rightWord of testResult().words.right;track rightWord){
-    <div class="border rounded px-4">
+    <div hlmBadge variant="outline">
       {{ rightWord.show.word
-      }}<span class="text-xs"> ({{ rightWord.show.language }})</span> :
+      }}<span class="text-xxs"> ({{ rightWord.show.language }})</span> :
       {{ rightWord.search.word
-      }}<span class="text-xs"> ({{ rightWord.search.language }}) </span>
+      }}<span class="text-xxs"> ({{ rightWord.search.language }}) </span>
     </div>
     }
   </div>
-
-  <h4 class="mt-4">Falsche Wörter</h4>
+  } @if(testResult().words.wrong.length){
+  <h4 class="mt-4 mb-1 font-bold">Falsch:</h4>
   <div class="flex gap-2 mb-4 flex-wrap">
     @for(wrongWord of testResult().words.wrong;track wrongWord){
-    <div class="border rounded px-4">
+    <div hlmBadge variant="outline">
       {{ wrongWord.show.word }}
-      <span class="text-xs"> ({{ wrongWord.show.language }}) </span>:
+      <span class="text-xxs"> ({{ wrongWord.show.language }}) </span>:
       {{ wrongWord.search.word }}
-      <span class="text-xs"> ({{ wrongWord.search.language }}) </span>
+      <span class="text-xxs"> ({{ wrongWord.search.language }}) </span>
     </div>
     }
   </div>
+  }
+
   <button (click)="resett()" hlmBtn class="mt-4">Neuer Versuch</button>
 
   }@else{
