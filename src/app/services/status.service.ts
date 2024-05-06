@@ -29,6 +29,11 @@ export class StatusService {
     }));
   }
 
+  async logout() {
+    await this.#storageService.removeUser();
+    location.reload();
+  }
+
   updateLanguages(lang: string, value: boolean) {
     const languages = { ...this.#config().languages, [lang]: value };
     const config = { ...this.#config(), languages };

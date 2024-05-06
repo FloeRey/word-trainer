@@ -5,6 +5,7 @@
     value="name"
     [(ngModel)]="name"
     placeholder="name"
+    (keydown.enter)="login()"
   />
   <button hlmBtn (click)="login()">LETS GO</button>
 </div>

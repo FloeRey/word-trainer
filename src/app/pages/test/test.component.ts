@@ -4,7 +4,7 @@ import { WordService } from '../../services/word.service';
 import { AvailableLanguages, Word } from '../../types/word';
 import { FormsModule } from '@angular/forms';
 import { StatusService } from '../../services/status.service';
-import { config } from '../../../config/config';
+
 import { HlmButtonDirective } from '../../../../libs/ui/ui-button-helm/src/lib/hlm-button.directive';
 import { HlmInputDirective } from '../../../../libs/ui/ui-input-helm/src/lib/hlm-input.directive';
 import { CommonModule } from '@angular/common';
@@ -186,6 +186,7 @@ export class TestComponent {
   nextWord() {
     if (this.testWords.length) {
       this.resultWord = '';
+
       this.activeTestWord.set(this.takeWord());
     }
   }
@@ -197,12 +198,11 @@ export class TestComponent {
 
   takeWord() {
     const word = this.getRandomWord(this.testWords);
-    const usedLanguages = Object.entries(config.languages)
-      .filter(([language, isAvailable]) => isAvailable)
-      .map((e) => e[0]);
+    const usedLanguages = this.config().languageArray;
 
     const availableLanguages = Object.keys(word).filter(
-      (key) => key !== 'id' && usedLanguages.indexOf(key) !== -1
+      (key) =>
+        key !== 'id' && usedLanguages.indexOf(key as AvailableLanguages) !== -1
     );
 
     const shuffledArray = this.utilsService.shuffleArray(availableLanguages);

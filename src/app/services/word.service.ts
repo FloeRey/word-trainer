@@ -10,6 +10,7 @@ import { AvailableLanguages, Quality, Word } from '../types/word';
 import { StorageService } from './storage.service';
 import { firstValueFrom } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { UtilsService } from './utils.service';
 
 @Injectable({
   providedIn: 'root',
@@ -17,6 +18,7 @@ import { HttpClient } from '@angular/common/http';
 export class WordService {
   storageService = inject(StorageService);
   statusService = inject(StatusService);
+  utilsService = inject(UtilsService);
 
   constructor(private http: HttpClient) {}
 
@@ -29,18 +31,35 @@ export class WordService {
   );
 
   add(word: { [key: string]: string }) {
-    const id = this.words().length.toString();
-    word['id'] = id;
-    Object.entries(word).forEach(([key, value]) => {
-      if (!value.trim()) {
-        delete word[key];
-      }
-    });
+    if (!this.checkIfAllreadyInWordList(word)) {
+      const id = this.utilsService.randomUuid();
+      word['id'] = id;
+      Object.entries(word).forEach(([key, value]) => {
+        if (!value.trim()) {
+          delete word[key];
+        } else {
+          word[key] = this.utilsService.toPascalCase(value);
+        }
+      });
 
-    const newWordList = [...this.words(), { ...(word as Word) }];
+      const newWordList = [...this.words(), { ...(word as Word) }];
+      localStorage.setItem('words', JSON.stringify(newWordList));
+      this.words.set(newWordList);
+    }
+  }
 
-    localStorage.setItem('words', JSON.stringify(newWordList));
-    this.words.set(newWordList);
+  checkIfAllreadyInWordList(newWord: { [key: string]: string }) {
+    return this.words().some((word) =>
+      Object.entries(newWord).every(([key, value]) => {
+        if (!word[key as AvailableLanguages]) {
+          return false;
+        }
+        return this.utilsService.compareWords(
+          word[key as AvailableLanguages]!,
+          value
+        );
+      })
+    );
   }
 
   async deleteWord(id: string) {

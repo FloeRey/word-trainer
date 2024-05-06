@@ -1,4 +1,4 @@
-<div class="my-6 container">
+<div class="my-6 container grid place-items-center">
   @if(config().languageArray){ @if(config().languageArray.length === 0){
   <div class="text-center">keine Sprachen aktiv</div>
   }
@@ -45,7 +45,11 @@
       </hlm-alert-dialog-header>
       <hlm-alert-dialog-footer>
         <button hlmAlertDialogCancel (click)="ctx.close()">Cancel</button>
-        <button hlmAlertDialogAction (click)="ctx.close(); this.removeAll()">
+        <button
+          hlmBtn
+          variant="destructive"
+          (click)="ctx.close(); this.removeAll()"
+        >
           Löschen
         </button>
       </hlm-alert-dialog-footer>
@@ -61,10 +65,10 @@
         <h3 hlmDialogTitle>Wortpaar hinzufügen</h3>
       </hlm-dialog-header>
 
-      <div class="py-4 grid gap-4">
+      <div class="py-4 grid gap-2">
         @for(lang of config().languageArray; track lang){
         <input
-          class="w-80 my-2"
+          class="w-80"
           hlmInput
           placeholder="{{ config().conf.naming[lang] }}"
           [(ngModel)]="newWord[lang]"
@@ -76,7 +80,6 @@
         <button
           hlmBtn
           type="button"
-          class="mx-2"
           variant="outline"
           [disabled]="loading()"
           (click)="activeDialog.set('')"
@@ -86,6 +89,7 @@
         <button
           hlmBtn
           type="submit"
+          class=""
           (click)="submitNewWord()"
           [disabled]="loading()"
         >
@@ -156,7 +160,7 @@
   @if(words().length){
   <div
     [ngClass]="getGridColsClass()"
-    class="container grid gap-6 sm:gap-4 place-items-center mt-8 pb-[100px] relative w-fit"
+    class="grid gap-6 sm:gap-4 place-items-center mt-8 pb-[100px] relative"
   >
     @for( word of words(); track word){ @if($index === 0){ @for(lang of
     config().languageArray; track lang){

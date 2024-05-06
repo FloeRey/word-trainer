@@ -43,4 +43,21 @@ export class UtilsService<T> {
 
     return `${time}`;
   }
+
+  randomUuid() {
+    return Math.random().toString(16).slice(2);
+  }
+
+  toPascalCase(text: string): string {
+    const words = text.split(/[\s_-]+/);
+
+    if (words.length === 0) {
+      return text;
+    }
+
+    const firstWord =
+      words[0].charAt(0).toUpperCase() + words[0].slice(1).toLowerCase();
+
+    return [firstWord, ...words.slice(1)].join(' ');
+  }
 }

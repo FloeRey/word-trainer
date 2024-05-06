@@ -3,18 +3,6 @@
     @if(trainingWords){ @if(trainingWords.length > 0 ){ @if(activeTraningWord()
     ){
 
-    <div
-      class="flex gap-4 flex-col sm:items-center sm:flex-row mt-8 mb-4"
-      [class.invisible]="qualitys()[activeTraningWord()!.id] === undefined"
-    >
-      <div>schwierigkeit</div>
-      <div
-        id="qualityIndicator"
-        class="w-full h-[10px] rounded-md"
-        [style.--indicator-value]="qualitys()[activeTraningWord()!.id] + '%'"
-      ></div>
-    </div>
-
     <div class="text-2xl mt-5">
       Wort in
       {{ config().conf.naming[activeTraningWord()!.show.language] }}:
@@ -29,6 +17,7 @@
       [(ngModel)]="resultWord"
       (ngModelChange)="onTrainWordChange($event)"
       [disabled]="isSuccess() || isCheated()"
+      [ngClass]="{ '!font-bold': isCheated() }"
     />
 
     <div class="flex gap-4 items-center">

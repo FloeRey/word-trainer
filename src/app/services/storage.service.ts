@@ -28,6 +28,10 @@ export class StorageService {
     localStorage.setItem('user', name);
   }
 
+  async removeUser() {
+    localStorage.removeItem('user');
+  }
+
   readUser(): string | undefined {
     return localStorage.getItem('user') ?? undefined;
   }
