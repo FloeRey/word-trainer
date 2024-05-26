@@ -1,4 +1,7 @@
 <div class="container mt-8 flex gap-4 flex-col items-center">
+  <button hlmBtn variant="destructive" class="my-6" (click)="logout()">
+    Logout {{ user() }}
+  </button>
   @for(language of config().conf.languages | keyvalue;track language){
 
   <div class="w-fit">
@@ -13,6 +16,4 @@
     </label>
   </div>
   }
-
-  <button hlmBtn class="mt-5" (click)="logout()">Logout {{ user() }}</button>
 </div>

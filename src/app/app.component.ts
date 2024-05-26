@@ -4,6 +4,7 @@ import { HeaderComponent } from './components/header/header.component';
 
 import { LoginComponent } from './components/login/login.component';
 import { StatusService } from './services/status.service';
+
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -14,5 +15,5 @@ import { StatusService } from './services/status.service';
 export class AppComponent {
   statusService = inject(StatusService);
   title = 'wordstrainer';
-  hasUser = this.statusService.user;
+  user = this.statusService.user;
 }

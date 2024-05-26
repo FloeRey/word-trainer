@@ -5,7 +5,7 @@ import {
   inject,
   signal,
 } from '@angular/core';
-import { AvailableLanguages, Word } from '../../types/word';
+import { Word } from '../../types/word';
 import { WordService } from '../../services/word.service';
 import { FormsModule } from '@angular/forms';
 import { HlmButtonDirective } from '../../../../libs/ui/ui-button-helm/src/lib/hlm-button.directive';
@@ -60,9 +60,7 @@ import { StatusService } from '../../services/status.service';
     HlmInputDirective,
     CommonModule,
     FormsModule,
-
     HlmButtonDirective,
-
     HlmDialogComponent,
     HlmDialogContentComponent,
     HlmDialogDescriptionDirective,
@@ -71,7 +69,6 @@ import { StatusService } from '../../services/status.service';
     HlmDialogTitleDirective,
     BrnDialogContentDirective,
     BrnDialogTriggerDirective,
-
     HlmAlertDialogComponent,
     HlmAlertDialogOverlayDirective,
     HlmAlertDialogHeaderComponent,
@@ -81,7 +78,6 @@ import { StatusService } from '../../services/status.service';
     HlmAlertDialogCancelButtonDirective,
     HlmAlertDialogActionButtonDirective,
     HlmAlertDialogContentComponent,
-
     BrnAlertDialogContentDirective,
     BrnAlertDialogTriggerDirective,
   ],
@@ -105,12 +101,9 @@ export class HomeComponent {
   statusService = inject(StatusService);
   words = this.wordService.getWords();
   config = this.statusService.config;
-
   loading = signal(false);
-
   newWord: { [key: string]: string } = {};
   selectedWord?: Word;
-
   activeDialog = signal('');
 
   loadExampleList() {
@@ -135,7 +128,6 @@ export class HomeComponent {
     if (Object.keys(this.newWord).length) {
       this.wordService.add(this.newWord);
     }
-
     this.closeDialog();
   }
 
@@ -162,7 +154,7 @@ export class HomeComponent {
   }
 
   showModalForOptions(word: Word) {
-    this.selectedWord = word;
+    this.selectedWord = { ...word };
     this.activeDialog.set('options');
   }
 

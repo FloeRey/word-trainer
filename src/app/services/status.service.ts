@@ -1,6 +1,6 @@
 import { StorageService } from './storage.service';
 import { Injectable, computed, effect, inject, signal } from '@angular/core';
-import { BehaviorSubject, TimeInterval } from 'rxjs';
+import { BehaviorSubject, TimeInterval, from, of } from 'rxjs';
 import { Config } from '../types/config';
 import { AvailableLanguages } from '../types/word';
 
@@ -13,8 +13,13 @@ export class StatusService {
   private $isTestRunning = new BehaviorSubject(false);
   $isTestRunning_ = this.$isTestRunning.asObservable();
 
-  #user = signal<string | undefined>(this.#storageService.readUser());
+  #user = signal<string | undefined>(undefined);
   #config = signal<Config>(this.#storageService.readConfig());
+
+  async initialize(): Promise<any> {
+    const user = await this.#storageService.readUser();
+    this.#user.set(user);
+  }
 
   get user() {
     return computed(() => this.#user());

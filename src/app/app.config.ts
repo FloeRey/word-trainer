@@ -1,14 +1,23 @@
-import { ApplicationConfig } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import { APP_INITIALIZER, ApplicationConfig } from '@angular/core';
+import { provideRouter, withHashLocation } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
 import { routes } from './app.routes';
-import { APP_BASE_HREF } from '@angular/common';
-import { environment } from '../environments/environment';
+
+import { StatusService } from './services/status.service';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideRouter(routes),
+    provideRouter(routes, withHashLocation()),
     provideHttpClient(),
-    { provide: APP_BASE_HREF, useValue: environment.baseUrl },
+    {
+      provide: APP_INITIALIZER,
+      multi: true,
+      useFactory: (statusService: StatusService) => {
+        return () => {
+          return statusService.initialize();
+        };
+      },
+      deps: [StatusService],
+    },
   ],
 };

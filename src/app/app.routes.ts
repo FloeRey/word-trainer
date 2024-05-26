@@ -26,4 +26,8 @@ export const routes: Routes = [
         (m) => m.SettingsComponent
       ),
   },
+  {
+    path: '**',
+    redirectTo: '',
+  },
 ];

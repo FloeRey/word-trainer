@@ -40,8 +40,11 @@ export class TestComponent {
   testWords: Word[] = [...this.wordService.getTrainingWords()];
   activeTestWord = signal<ActiveWord | undefined>(undefined);
   config = this.statusService.config;
-
   resultWord: string = '';
+  showResults = signal(false);
+  #timer?: ReturnType<typeof setTimeout>;
+  isRunning = signal(false);
+  runTime = 0;
 
   testResult = signal<{
     time: string;
@@ -56,19 +59,12 @@ export class TestComponent {
       right: [],
     },
   });
-
   testSetup = signal({
     time: 3600,
     neededSuccessWords: undefined,
     wordCount: undefined,
     testTimer: undefined,
   });
-
-  showResults = signal(false);
-
-  #timer?: ReturnType<typeof setTimeout>;
-  isRunning = signal(false);
-  runTime = 0;
 
   start() {
     this.setup();

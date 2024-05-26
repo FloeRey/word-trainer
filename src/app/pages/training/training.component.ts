@@ -52,11 +52,9 @@ export class TrainingComponent {
   wordService = inject(WordService);
   utilsService = inject(UtilsService);
   statusService = inject(StatusService);
-
   trainingWords = this.wordService.getTrainingWords();
   qualitys = this.wordService.getWordsQuality();
   config = this.statusService.config;
-
   activeTraningWord = signal<ActiveWord | undefined>(undefined);
   resultWord?: string;
   isSuccess = signal(false);
@@ -64,8 +62,25 @@ export class TrainingComponent {
 
   ngOnInit() {
     if (this.trainingWords.length) {
+      this.addQuality();
       this.nextWord();
     }
+  }
+
+  addQuality() {
+    const extendedWordlist: Word[] = [];
+    this.trainingWords.forEach((word) => {
+      const q = this.qualitys()[word.id];
+      if (q) {
+        if (q < 0.5) extendedWordlist.push(word);
+        if (q < 0.4) extendedWordlist.push(word);
+        if (q < 0.3) extendedWordlist.push(word);
+        if (q < 0.2) extendedWordlist.push(word);
+        if (q < 0.1) extendedWordlist.push(word);
+      }
+      extendedWordlist.push(word);
+    });
+    this.trainingWords = extendedWordlist;
   }
 
   nextWord() {
@@ -93,21 +108,7 @@ export class TrainingComponent {
   }
 
   getRandomWord(words: Word[]): Word {
-    let random = Math.floor(Math.random() * (this.trainingWords.length - 1));
-    let x = 0;
-    while (x < 10) {
-      if (
-        !this.qualitys()[words[random].id] ||
-        this.qualitys()[words[random].id] > 0.3
-      ) {
-        random = Math.floor(Math.random() * (this.trainingWords.length - 1));
-      } else {
-        break;
-      }
-      x++;
-    }
-
-    return words[random];
+    return words[Math.floor(Math.random() * this.trainingWords.length)];
   }
 
   takeWord() {

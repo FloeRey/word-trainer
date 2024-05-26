@@ -32,8 +32,12 @@ export class StorageService {
     localStorage.removeItem('user');
   }
 
-  readUser(): string | undefined {
-    return localStorage.getItem('user') ?? undefined;
+  async readUser(): Promise<string | undefined> {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(localStorage.getItem('user') || undefined);
+      }, 500);
+    });
   }
 
   readConfig(): Config {

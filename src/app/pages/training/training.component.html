@@ -26,12 +26,7 @@
         <hlm-icon size="sm" name="radixHeartFilled" class="text-red-600" />
         Gratulation!
       </div>
-      }@else{ @if(isCheated()){
-      <div class="text-sm flex items-center gap-3">
-        <hlm-icon size="sm" name="radixEyeOpen" class="text-red-600" />
-        Vielleicht beim nächsten Mal!
-      </div>
-      }@else{
+      }@else{ @if(!isCheated()){
       <button hlmBtn (click)="showResult()">Lösung</button>
       } } @if(trainingWords.length > 1 ){
       <button hlmBtn variant="secondary" (click)="nextWord()">next</button>
